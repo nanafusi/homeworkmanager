@@ -3,11 +3,12 @@ import os
 from datetime import datetime as dt
 
 Timetable = ["電子回路２", "応用数学１", "発変電工学", "英語", "第二外国語", "情報通信", "数値解析", "電子工学",
-             "日本経済論", "保健体育", "電気磁気学", "応用数学２", "回路網理論", "データベース論"]
+             "日本経済論", "保健体育", "電気磁気学", "応用数学２", "回路網理論", "ＤＢ論"]
 
 dbpath = 'kadais.sqlite'
 
-connection = sq.connect(dbpath)
+# 自動でDBにcommitされる
+connection = sq.connect(dbpath, isolation_level=None)
 cursor = connection.cursor()
 
 try:
@@ -20,10 +21,9 @@ try:
 except sqlite3.Error as e:
     print('sqlite3.Error occurred:', e.args[0])
 
-# 日付のフォーマットをチェックする
-
 
 def check_format(sdate):
+    # 日付のフォーマットをチェックする
     try:
         fdate = dt.strptime(sdate, '%Y-%m-%d %H:%M:%S')
         return True
@@ -33,8 +33,11 @@ def check_format(sdate):
 
 def todo_view():
     print("\n現在の予定はこちらです")
-    for row in cursor.execute("SELECT * FROM todo"):
-        print(row)
+    print("{} {} {}".format("教科".ljust(5, "　"), "期限".ljust(17), "概要"))
+    print("-"*60)
+    for row in cursor.execute("SELECT * FROM todo ORDER BY date ASC"):
+        print("{} {} {}".format(
+            Timetable[int(row[0])].ljust(5, "　"), row[1], row[2]))
     print("")
 
 
