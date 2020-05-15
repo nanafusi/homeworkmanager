@@ -1,25 +1,30 @@
 import sqlite3 as sq
 import os
 from datetime import datetime as dt
-
+import tkinter
+import sys
+from main_form import *
 Timetable = ["電子回路２", "応用数学１", "発変電工学", "英語", "第二外国語", "情報通信", "数値解析", "電子工学",
              "日本経済論", "保健体育", "電気磁気学", "応用数学２", "回路網理論", "ＤＢ論"]
 
 dbpath = 'kadais.sqlite'
 
 # 自動でDBにcommitされる
+
 connection = sq.connect(dbpath, isolation_level=None)
+
 cursor = connection.cursor()
 
-try:
-    # CREATE
-    # なぜかなかったら新しく作る
-    if not os.path.isfile(dbpath):
-        print("データベースが存在しません。新たに作成します。")
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS todo (class integer, date text, about text)")
-except sqlite3.Error as e:
-    print('sqlite3.Error occurred:', e.args[0])
+
+def initialize():
+    print("データベースが存在しません。新たに作成します。")
+    try:
+        # CREATE
+        # なぜかなかったら新しく作る
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS todo (class integer, date text, about text)")
+    except sqlite3.Error as e:
+        print('sqlite3.Error occurred:', e.args[0])
 
 
 def check_format(sdate):
@@ -38,7 +43,7 @@ def todo_view():
     for row in cursor.execute("SELECT * FROM todo ORDER BY date ASC"):
         print("{} {} {}".format(
             Timetable[int(row[0])].ljust(5, "　"), row[1], row[2]))
-    print("")
+        print("")
 
 
 def todo_add():
@@ -94,6 +99,8 @@ def end():
     exit()
 
 
+if not os.path.isfile(dbpath):
+    initialize()
 while True:
 
     print("課題管理プログラム\n1 課題予定追加, 2 課題予定参照, 3 通期機能ONOFF, 99 終了> ", end="")
@@ -106,7 +113,7 @@ while True:
         todo_view()
 
     elif answer == "3":
-        print("set notif")
+        pass
 
     elif answer == "99":
         end()
