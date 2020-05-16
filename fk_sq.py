@@ -1,9 +1,10 @@
 import sqlite3 as sq
 import os
 from datetime import datetime as dt
-import tkinter
 import sys
-from main_form import *
+import tkinter as tk
+import time
+
 Timetable = ["電子回路２", "応用数学１", "発変電工学", "英語", "第二外国語", "情報通信", "数値解析", "電子工学",
              "日本経済論", "保健体育", "電気磁気学", "応用数学２", "回路網理論", "ＤＢ論"]
 
@@ -22,7 +23,7 @@ def initialize():
         # CREATE
         # なぜかなかったら新しく作る
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS todo (class integer, date text, about text)")
+            "CREATE TABLE IF NOT EXISTS todo (class integer, date text, about text, key integer)")
     except sqlite3.Error as e:
         print('sqlite3.Error occurred:', e.args[0])
 
@@ -92,28 +93,62 @@ def todo_add():
             print("\n")
             return
 
+def todo_change_key():
+    
 
 def end():
     connection.commit()
     connection.close()
-    exit()
+    sys.exit(0)
 
+def changeFrame(frame):
+    # MainPageを上位層にする
+    frame.tkraise()
+
+
+def form_loop():
+    root = tk.Tk()
+    root.title(u"Kadai kanri")
+    root.geometry("400x300")
+
+    # メインフレームちそちそ
+    mainFrame = tk.Frame(root)
+    change_Btn = tk.Button(mainFrame, text="課題編集",command=lambda: todo_add())
+    change_Btn.pack()
+
+    refer_Btn = tk.Button(mainFrame, text="課題参照",command=lambda: todo_view())
+    refer_Btn.pack()
+
+    exit_Btn = tk.Button(mainFrame, text="終了",command=lambda: end())
+    exit_Btn.pack()
+
+    mainFrame.grid(row=0, column=0, sticky="nsew")
+
+    ## ちそちそフレーム
+    #tstsFrame = tk.Frame(root)
+    #tstsLabel = tk.Label(tstsFrame, text="ちそちそ")
+    #tstsLabel.pack()
+    #tstsFrame.grid(row=0, column=0, sticky="nsew")
+
+    mainFrame.tkraise()
+
+    root.mainloop()
 
 if not os.path.isfile(dbpath):
     initialize()
 while True:
+    form_loop()
+    #print("課題管理プログラム\n1 課題予定追加, 2 課題予定参照, 3 通期機能ONOFF, 99 終了> ", end="")
 
-    print("課題管理プログラム\n1 課題予定追加, 2 課題予定参照, 3 通期機能ONOFF, 99 終了> ", end="")
+    #answer = str(input())
+    #if answer == "1":
+    #    todo_add()
 
-    answer = str(input())
-    if answer == "1":
-        todo_add()
+    #elif answer == "2":
+    #    todo_view()
 
-    elif answer == "2":
-        todo_view()
+    #elif answer == "3":
+    #    pass
 
-    elif answer == "3":
-        pass
-
-    elif answer == "99":
-        end()
+    #elif answer == "99":
+    #    end()
