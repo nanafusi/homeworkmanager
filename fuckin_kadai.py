@@ -53,7 +53,7 @@ def change_plans(json_data):
 while True:
 
 
-    print("課題管理プログラム: 入力してください 1 課題予定追加 2 課題予定参照 3 通期機能ONOFF")
+    print("課題管理プログラム: 入力してください 1 課題予定追加 2 課題予定参照 3 通知機能ONOFF")
 
     answer = str(input())
     if answer == "1":

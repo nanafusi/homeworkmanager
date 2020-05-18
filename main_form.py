@@ -17,14 +17,20 @@ def main_loop():
     mainFrame = tk.Frame(root)
     changeBtn = tk.Button(mainFrame, text="Goto Chiso Chiso",
                           command=lambda: changeFrame(tstsFrame))
-    changeBtn.pack()
+    changeBtn.place(x=0,y=0)
+    
     mainFrame.grid(row=0, column=0, sticky="nsew")
+    
+    
+    
 
     # ちそちそフレーム
     tstsFrame = tk.Frame(root)
-    tstsLabel = tk.Label(tstsFrame, text="ちそちそ")
-    tstsLabel.pack()
-    tstsFrame.grid(row=0, column=0, sticky="nsew")
+    #refer_btn = tk.Button(tstsFrame, text="課題参照", command=lambda: )
+    #refer_btn.pack()
+    Label = tk.Label(tstsFrame, text="ちそちそ")
+    Label.pack()
+    tstsFrame.grid(row=0, column=0)
 
     mainFrame.tkraise()
 
