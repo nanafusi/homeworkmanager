@@ -1,6 +1,7 @@
 import sqlite3 as sq
 import os
 from datetime import datetime as dt
+from os import path
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -9,7 +10,8 @@ import time
 Timetable = ["電子回路２", "応用数学１", "発変電工学", "英語", "第二外国語", "情報通信", "数値解析", "電子工学",
              "日本経済論", "保健体育", "電気磁気学", "応用数学２", "回路網理論", "ＤＢ論"]
 
-dbpath = 'kadais.sqlite'
+dbpath = os.path.dirname(path.abspath(__file__))+'/kadais.sqlite'
+#print(os.path.dirname(path.abspath(__file__)))
 
 tmp_key = 9999
 
